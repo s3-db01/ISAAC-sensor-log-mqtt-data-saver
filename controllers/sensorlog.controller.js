@@ -1,5 +1,5 @@
 const db = require("../models");
-const SensorLog = db.sensor_logs;
+const SensorLog = db.sensorlogs;
 
 exports.create = (data, res) => {
 
