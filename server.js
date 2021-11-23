@@ -20,11 +20,16 @@ app.get("/", (req, res) => {
     res.json({ message: "Hello User!" });
 });
 
+const db = require("./models");
+db.sequelize.sync();
+
+
 // set port, listen for requests
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3004;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}.`);
 });
+
 
 const sensorlogs = require("./controllers/sensorlog.controller.js");
 
@@ -40,6 +45,6 @@ connection.onerror = (error) => {
     console.log(`WebSocket error: ${error}`)
 }
 
-connection.onmessage = (e) => {
-    sensorlogs.create(e.data)
+connection.onmessage = async (e) => {
+    await sensorlogs.create(e.data)
 }

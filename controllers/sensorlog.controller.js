@@ -1,12 +1,13 @@
 const db = require("../models");
 const SensorLog = db.sensorlogs;
 
-exports.create = (data, res) => {
+exports.create = async (req) => {
 
-    const json = JSON.parse(data);
+    const json = await JSON.parse(req);
 
+    // Create a SensorLog
     const sensorLog = {
-        sensor_id: json.sensordata[0]["x-coord"] + "-" + json.sensordata[0]["y-coord"],
+        id : json.sensordata[0]["x-coord"] + "-" + json.sensordata[0]["y-coord"],
         humidity: null,
         temperature: null,
         up_time: null
@@ -14,14 +15,13 @@ exports.create = (data, res) => {
 
     console.log(sensorLog);
 
-    SensorLog.create(sensorLog)
+    // Save SensorLog in the database
+        SensorLog.create(sensorLog)
         .then(data => {
-            res.send(data);
+            console.log("s");
         })
         .catch(err => {
-            res.status(500).send({
-                message:
-                    err.message || "Some error occurred while creating the SensorLog."
-            });
+            console.log("Error " + err);
         });
+
 };
